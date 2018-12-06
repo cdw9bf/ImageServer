@@ -1,0 +1,8 @@
+FROM java:8
+
+ADD /target/imageserver-1.0-SNAPSHOT.jar /imageserver/imageserver-1.0-SNAPSHOT.jar
+ADD /media/test_image.jpg /images/0.jpg
+
+EXPOSE 8080:8080
+
+CMD ["java", "-jar", "/imageserver/imageserver-1.0-SNAPSHOT.jar"]
