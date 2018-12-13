@@ -1,11 +1,11 @@
 package imageserver.image;
 
 import org.apache.log4j.Logger;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,5 +40,12 @@ public class ImageController {
         } catch (IOException ioe) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping(path = "/image", consumes = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity recieveImage() {
+
+
+        return ResponseEntity.ok().build();
     }
 }
