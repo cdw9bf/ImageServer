@@ -8,12 +8,16 @@ and making it easy to back up photos to different locations either on the cloud 
 ### Build and Deploy
 This app is designed to run inside of a docker container. To build the container one must be in the root directory of this project.
 
-Steps:
+Build:
   1. `mvn clean install`
   2. `docker build -f DockerFile -t imageserver .`
 
-Running the container:
+Running the Container:
   1. `docker run -p 8080:8080 imageserver`
+
+
+To test to see if the application is running correct, a sample image is included in the repo. The docker container is 
+bound on port 8080 to your local machine. You can go to http://localhost:8080/image?id=0 and see the example image. 
 
 
 ## Future Status
