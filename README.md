@@ -20,6 +20,25 @@ To test to see if the application is running correct, a sample image is included
 bound on port 8080 to your local machine. You can go to http://localhost:8080/image?id=0 and see the example image. 
 
 
+
+## Creating PostgresDB backend
+The app uses a standard postgres implementation. One can pull the container `postgres` with the command
+`docker pull postgres`
+
+
+To run the container,
+`docker run -p 5432:5432 -e POSTGRES_PASSWORD=<pw> -d postgres -rm`
+
+### Backing up container
+To create a backup of the container run
+`docker exec -t <container ID>  pg_dumpall -c -U postgres > dump_\`date +%d-%m-%Y"_"%H_%M_%S\`.sql\``
+
+### Restoring from backup
+To restore a new container from a previous backup
+`cat dump_14-12-2018_13_34_44.sql | docker exec -i <container ID> psql -U postgres`
+
+
+
 ## Future Status
 This app will eventually be integrated with a database backend for storing the image location and various metadata. Also images will be
 cached on a Redis server in another container. 
