@@ -31,7 +31,7 @@ To run the container,
 
 ### Backing up container
 To create a backup of the container run
-`docker exec -t <container ID>  pg_dumpall -c -U postgres > dump_\`date +%d-%m-%Y"_"%H_%M_%S\`.sql\``
+`docker exec -t <container ID>  pg_dumpall -c -U postgres > dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql\`
 
 ### Restoring from backup
 To restore a new container from a previous backup
@@ -42,3 +42,45 @@ To restore a new container from a previous backup
 ## Future Status
 This app will eventually be integrated with a database backend for storing the image location and various metadata. Also images will be
 cached on a Redis server in another container. 
+
+
+
+
+# Road Map and Stories
+    - API to upload one image
+        - API to upload range of images
+        - Read Metadata from image uploaded
+        - Handle jpeg
+        - Saves image to configured place on either the system or container
+        - Updates Database with metadata
+        - Handles .NEF
+    - API to get one image
+        - API to get range of images
+    - Database schema for uploading and cataloging image
+    - Retrieving image based on date
+    - Color profiles so query by color and like images
+    - ML on images for categorizing
+ 
+ 
+ Road Map: 
+    
+    1. API to upload one image (JPEG)
+        a. Saves image to configured place on either the system or container
+        b. Read Metadata from image uploaded
+        c. Updates Database with basic metadata 
+            - Date Taken
+            - Date Uploaded
+            - Checksum of image
+    2. API to get one image (JPEG)
+        a. Retrieve image based on date
+        b. Retrieve image based on last uploaded
+        c. Retrieve image small
+        d. Retrieve image full sized
+    3. API to upload one image (NEF) {Implements all of 1's stories)
+    4. API to get one image (NEF) {Implements all of 2's stories}
+    5. Categorize Images
+        a. Use Color profile
+        b. Use edge transforms
+        c. Resnet models 
+        d. 
+        

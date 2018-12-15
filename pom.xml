@@ -10,8 +10,8 @@
 
     <properties>
         <project.build.sourceEndcoding>UTF-8</project.build.sourceEndcoding>
-        <maven.compiler.source>1.6</maven.compiler.source>
-        <maven.compiler.target>1.6</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <parent>
@@ -41,6 +41,13 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
+
+        <!--Read Nikon NEF file format-->
+        <!--<dependency>-->
+            <!--<groupId>org.rawdarkroom</groupId>-->
+            <!--<artifactId>jrawio</artifactId>-->
+        <!--ADD VERSION ID-->
+        <!--</dependency>-->
 
         <!--<dependency>-->
         <!--<groupId>org.springframework.boot</groupId>-->

@@ -41,5 +41,20 @@ public class ImageDAO {
     }
 
 
+    public void insertImageMetadata(Integer id, String path) {
+        Connection con = null;
+        try {
+            con = source.getConnection();
+            // use connection
+        } catch(SQLException e) {
+            // log error
+        } finally {
+            if(con != null) {
+                try {con.close();}catch(SQLException e) {}
+            }
+        }
+    }
+
+
 
 }
