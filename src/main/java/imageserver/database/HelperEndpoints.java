@@ -27,9 +27,8 @@ public class HelperEndpoints {
 
     @PutMapping(value = "/database", consumes = "application/json")
     public ResponseEntity executeSQL(@RequestBody DatabaseQuery payload) {
-//        Gson gson = new Gson();
-//
-//        DatabaseQuery dbq = gson.fromJson(payload.toString(), DatabaseQuery.class);
+
+        imageDAO.executeQuery(payload.getQuery());
         log.info(payload.toString());
         return ResponseEntity.ok().build();
     }

@@ -39,6 +39,17 @@ To restore a new container from a previous backup
 
 
 
+## Database Design
+
+Catalog Table
+
+ | uploadDate | id         | name |
+ | :--------: | :--------: | :--: |
+ | DATE       | INT UNIQUE | TEXT NOT NULL |
+
+
+
+
 ## Future Status
 This app will eventually be integrated with a database backend for storing the image location and various metadata. Also images will be
 cached on a Redis server in another container. 

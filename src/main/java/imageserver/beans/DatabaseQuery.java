@@ -1,13 +1,9 @@
 package imageserver.beans;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
 public class DatabaseQuery implements Serializable {
-    @SerializedName("query")
-    @Expose
     private String query;
 
 

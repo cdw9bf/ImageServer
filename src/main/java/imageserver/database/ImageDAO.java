@@ -7,13 +7,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 
 public class ImageDAO {
     private static Logger log = Logger.getLogger(ImageDAO.class);
 
     private static Jdbc3PoolingDataSource source;
 
-    ImageDAO() {
+    public ImageDAO() {
         // Only Initialize first time the class is created
         if (source == null) {
             log.info("Creating new Source");
@@ -31,43 +32,56 @@ public class ImageDAO {
         source = pool;
     }
 
-    /**
-     *
-     * @param id
-     */
     public void fetchImageMetadata(Integer id) {
         try ( Connection con = source.getConnection()){
             // use connection
         } catch(SQLException e) {
             // log error
+            log.warn(e.toString());
         }
     }
 
-    public void insertImageMetadata(Integer id, String path) {
+    public void insertImageMetadata(String fullImagePath, String thumbNailPath, String checksum, Date uploadDate, Integer id) {
+        Statement stmt = null;
+        ResultSet rs = null;
         try ( Connection con = source.getConnection()){
-            // use connection
+
+            // TODO: Dynamically Insert Table Name from Params
+            String query = "INSERT INTO imagemetadata VALUES (" + fullImagePath + ", " + thumbNailPath + ", " + checksum + ", " + uploadDate.toString() + ", " + id.toString() + ");";
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
         } catch(SQLException e) {
             // log error
+            log.warn(e.toString());
+        } finally {
+            try { if (rs != null) rs.close(); } catch (Exception e) {log.warn(e.toString());};
+            try { if (stmt != null) stmt.close(); } catch (Exception e) {log.warn(e.toString());};
+        }
+    }
+
+    public void executeQuery(String query) {
+        Statement stmt = null;
+        ResultSet rs = null;
+        try (Connection con = source.getConnection()){
+            // use connection
+            log.info("Executing query " + query);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                log.info(rs.toString());
+            }
+            rs.close();
+        } catch(SQLException e) {
+            // log error
+            log.warn(e.toString());
+        } finally {
+            try { if (rs != null) rs.close(); } catch (Exception e) {log.warn(e.toString());};
+            try { if (stmt != null) stmt.close(); } catch (Exception e) {log.warn(e.toString());};
         }
     }
 
     public Jdbc3PoolingDataSource getSource() {
         return source;
-    }
-
-    public void executeQuery(String query) {
-        try ( Connection con = source.getConnection()){
-            // use connection
-            log.info("Executing query " + query);
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                log.info(rs.toString());
-            }
-        } catch(SQLException e) {
-            // log error
-            log.warn(e.toString());
-        }
     }
 
 }
