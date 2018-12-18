@@ -41,12 +41,25 @@ To restore a new container from a previous backup
 
 ## Database Design
 
-Catalog Table
+Catalog Table Schema 
 
- | uploadDate | id         | name |
- | :--------: | :--------: | :--: |
- | DATE       | INT UNIQUE | TEXT NOT NULL |
+| uploadDate | id         | name |
+| :--------: | :--------: | :--: |
+| DATE       | INT UNIQUE | TEXT NOT NULL |
 
+
+Thumbnail Metadata Table Schema 
+
+| path          | checksum      | id                  | name          | type          |
+| :-----------: | :-----------: | :-----------------: | :-----------: | :-----------: |
+| TEXT NOT NULL | TEXT NOT NULL | INT UNIQUE NOT NULL | TEXT NOT NULL | TEXT NOT NULL |
+
+
+Full-size Metadata Table Schema
+
+| path          | checksum      | id                  | name          | type          |
+| :-----------: | :-----------: | :-----------------: | :-----------: | :-----------: |
+| TEXT NOT NULL | TEXT NOT NULL | INT UNIQUE NOT NULL | TEXT NOT NULL | TEXT NOT NULL |
 
 
 
