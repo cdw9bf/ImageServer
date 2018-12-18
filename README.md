@@ -43,23 +43,23 @@ To restore a new container from a previous backup
 
 Catalog Table Schema 
 
-| uploadDate | id         | name |
-| :--------: | :--------: | :--: |
+| uploadDate | id         | name          |
+| :--------: | :--------: | :-----------: |
 | DATE       | INT UNIQUE | TEXT NOT NULL |
 
 
 Thumbnail Metadata Table Schema 
 
-| path          | checksum      | id                  | name          | type          |
-| :-----------: | :-----------: | :-----------------: | :-----------: | :-----------: |
-| TEXT NOT NULL | TEXT NOT NULL | INT UNIQUE NOT NULL | TEXT NOT NULL | TEXT NOT NULL |
+| path          | checksum      | id                  | name          | type          | timeTaken |
+| :-----------: | :-----------: | :-----------------: | :-----------: | :-----------: | :-------: |
+| TEXT NOT NULL | TEXT NOT NULL | INT UNIQUE NOT NULL | TEXT NOT NULL | TEXT NOT NULL | TIMESTAMP |
 
 
 Full-size Metadata Table Schema
 
-| path          | checksum      | id                  | name          | type          |
-| :-----------: | :-----------: | :-----------------: | :-----------: | :-----------: |
-| TEXT NOT NULL | TEXT NOT NULL | INT UNIQUE NOT NULL | TEXT NOT NULL | TEXT NOT NULL |
+| path          | checksum      | id                  | name          | type          | timeTaken |
+| :-----------: | :-----------: | :-----------------: | :-----------: | :-----------: | :-------: |
+| TEXT NOT NULL | TEXT NOT NULL | INT UNIQUE NOT NULL | TEXT NOT NULL | TEXT NOT NULL | TIMESTAMP |
 
 
 
@@ -105,6 +105,5 @@ cached on a Redis server in another container.
     5. Categorize Images
         a. Use Color profile
         b. Use edge transforms
-        c. Resnet models 
-        d. 
+        c. Resnet models (?)
         
