@@ -13,7 +13,7 @@ Build:
   2. `docker build -f DockerFile -t imageserver .`
 
 Running the Container:
-  1. `docker run -p 8080:8080 imageserver`
+  1. `docker run -p 8080:8080 --name=imagerest --link imagedb:imagedb -d imageserver  -rm `
 
 
 To test to see if the application is running correct, a sample image is included in the repo. The docker container is 
