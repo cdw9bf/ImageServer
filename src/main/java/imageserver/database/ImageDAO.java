@@ -80,6 +80,30 @@ public class ImageDAO {
         }
     }
 
+    public Integer getImageCounter() {
+        Statement stmt = null;
+        ResultSet rs = null;
+        String query = "UPDATE counter SET id = id + 1 RETURNING id;";
+        try (Connection con = source.getConnection()){
+            // use connection
+            log.info("Executing query " + query);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                log.info(rs.toString());
+            }
+            rs.close();
+        } catch(SQLException e) {
+            // log error
+            log.warn(e.toString());
+        } finally {
+            try { if (rs != null) rs.close(); } catch (Exception e) {log.warn(e.toString());};
+            try { if (stmt != null) stmt.close(); } catch (Exception e) {log.warn(e.toString());};
+        }
+
+        return 0;
+    }
+
     public Jdbc3PoolingDataSource getSource() {
         return source;
     }
