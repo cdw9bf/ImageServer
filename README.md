@@ -43,30 +43,24 @@ To restore a new container from a previous backup
 
 Catalog Table Schema 
 
-| uploadTime | id              | name          |
-| :--------: | :-------------: | :-----------: |
-| TIMESTAMP  | INT PRIMARY KEY | TEXT NOT NULL |
+| uploadTime | uuid  | name          |
+| :--------: | :---: | :-----------: |
+| TIMESTAMP  | UUID  | TEXT NOT NULL |
 
 
 Thumbnail Metadata Table Schema 
 
-| path          | checksum      | id              | name          | type          | timeTaken |
-| :-----------: | :-----------: | :-------------: | :-----------: | :-----------: | :-------: |
-| TEXT NOT NULL | TEXT NOT NULL | INT PRIMARY KEY | TEXT NOT NULL | TEXT NOT NULL | TIMESTAMP |
+| path          | checksum      | uuid  | name          | type          | timeTaken |
+| :-----------: | :-----------: | :---: | :-----------: | :-----------: | :-------: |
+| TEXT NOT NULL | TEXT NOT NULL | UUID  | TEXT NOT NULL | TEXT NOT NULL | TIMESTAMP |
 
 
 Full-size Metadata Table Schema
 
-| path          | checksum      | id              | name          | type          | timeTaken |
-| :-----------: | :-----------: | :-------------: | :-----------: | :-----------: | :-------: |
-| TEXT NOT NULL | TEXT NOT NULL | INT PRIMARY KEY | TEXT NOT NULL | TEXT NOT NULL | TIMESTAMP |
+| path          | checksum      | uuid  | name          | type          | timeTaken |
+| :-----------: | :-----------: | :---: | :-----------: | :-----------: | :-------: |
+| TEXT NOT NULL | TEXT NOT NULL | UUID  | TEXT NOT NULL | TEXT NOT NULL | TIMESTAMP |
 
-
-Counter Table
-
-| counter |
-| :-----: |
-| INT     |
 
 ## Future Status
 This app will eventually be integrated with a database backend for storing the image location and various metadata. Also images will be

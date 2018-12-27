@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class ImageStorageService {
@@ -42,9 +43,10 @@ public class ImageStorageService {
     }
 
 
-    public String storeFile(MultipartFile file) {
+    public void storeFile(MultipartFile file) {
         // Normalize file name
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        UUID uuid = UUID.randomUUID();
+
 
         try {
             // Insert into Database
@@ -52,7 +54,7 @@ public class ImageStorageService {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
             Date todaysDate = new Date();
             String date = simpleDateFormat.format(todaysDate);
-            Path fullSizePath = this.fileStorageLocation.resolve("/full_size/" + date);
+            Path fullSizePath = this.fileStorageLocation.resolve("/full_size/" + date + "/" + uuid.toString());
 
             if (Files.notExists(fullSizePath)) {
                 Files.createDirectories(fullSizePath);
@@ -62,17 +64,16 @@ public class ImageStorageService {
             this.imageDAO.insertImageMetadata(fullSizePath.toString(),
                     fullSizePath.toString(),
                     "checkSum",
-                    todaysDate);
-
-
+                    todaysDate,
+                    uuid);
             log.info(fullSizePath.toString());
             Files.copy(file.getInputStream(), fullSizePath, StandardCopyOption.REPLACE_EXISTING);
 
-            return fileName;
         } catch (IOException ex) {
 //            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+            this.imageDAO.removeImageMetadata(uuid);
+
         }
-        return "";
     }
 
 

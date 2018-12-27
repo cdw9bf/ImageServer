@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.UUID;
 
 public class ImageDAO {
     private static Logger log = Logger.getLogger(ImageDAO.class);
@@ -41,13 +42,31 @@ public class ImageDAO {
         }
     }
 
-    public void insertImageMetadata(String fullImagePath, String thumbNailPath, String checksum, Date uploadDate, Integer id) {
+    public void insertImageMetadata(String fullImagePath, String thumbNailPath, String checksum, Date uploadDate, UUID uuid) {
         Statement stmt = null;
         ResultSet rs = null;
         try ( Connection con = source.getConnection()){
 
             // TODO: Dynamically Insert Table Name from Params
-            String query = "INSERT INTO imagemetadata VALUES (" + fullImagePath + ", " + thumbNailPath + ", " + checksum + ", " + uploadDate.toString() + ", " + id.toString() + ");";
+            String query = "INSERT INTO imagemetadata VALUES (" + fullImagePath + ", " + thumbNailPath + ", " + checksum + ", " + uploadDate.toString() + ", " + uuid.toString() + ");";
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+        } catch(SQLException e) {
+            // log error
+            log.warn(e.toString());
+        } finally {
+            try { if (rs != null) rs.close(); } catch (Exception e) {log.warn(e.toString());};
+            try { if (stmt != null) stmt.close(); } catch (Exception e) {log.warn(e.toString());};
+        }
+    }
+
+    public void removeImageMetadata(UUID uuid) {
+        Statement stmt = null;
+        ResultSet rs = null;
+        try ( Connection con = source.getConnection()){
+
+            // TODO: Dynamically Insert Table Name from Params
+            String query = "DELETE FROM imagemetadata WHERE uuid=" + uuid.toString() + ";";
             stmt = con.createStatement();
             rs = stmt.executeQuery(query);
         } catch(SQLException e) {
