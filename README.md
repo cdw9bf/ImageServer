@@ -20,7 +20,6 @@ To test to see if the application is running correct, a sample image is included
 bound on port 8080 to your local machine. You can go to http://localhost:8080/image?id=0 and see the example image. 
 
 
-
 ## Creating PostgresDB backend
 The app uses a standard postgres implementation. One can pull the container `postgres` with the command
 `docker pull postgres`
@@ -61,6 +60,10 @@ Full-size Metadata Table Schema
 | :-----------: | :-----------: | :---: | :-----------: | :-----------: | :-------: |
 | TEXT NOT NULL | TEXT NOT NULL | UUID  | TEXT NOT NULL | TEXT NOT NULL | TIMESTAMP |
 
+
+## Test with CURL command
+To upload a photo to the database, use the command:
+`curl -X POST  -F "file=@<filename>" -H "Content-Type:multipart/form-data" http://localhost:8080/image/upload`
 
 ## Future Status
 This app will eventually be integrated with a database backend for storing the image location and various metadata. Also images will be

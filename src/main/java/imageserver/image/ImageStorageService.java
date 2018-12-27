@@ -1,6 +1,7 @@
 package imageserver.image;
 
 import imageserver.database.ImageDAO;
+import imageserver.exceptions.InsertFailedException;
 import imageserver.properties.FileStorageProperties;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class ImageStorageService {
     }
 
 
-    public void storeFile(MultipartFile file) {
+    public boolean storeFile(MultipartFile file) {
         // Normalize file name
         UUID uuid = UUID.randomUUID();
 
@@ -69,11 +70,16 @@ public class ImageStorageService {
             log.info(fullSizePath.toString());
             Files.copy(file.getInputStream(), fullSizePath, StandardCopyOption.REPLACE_EXISTING);
 
+        } catch (InsertFailedException ife ) {
+            log.warn("Failed to store file in database");
+            return false;
         } catch (IOException ex) {
 //            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
             this.imageDAO.removeImageMetadata(uuid);
+            return false;
 
         }
+        return true;
     }
 
 

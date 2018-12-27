@@ -20,7 +20,7 @@ public class HelperEndpoints {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } else if (command.equalsIgnoreCase("drop images")) {
             log.info("Made it to elseif");
-            imageDAO.executeQuery("DELETE FROM imagemetadata;");
+            imageDAO.executeUpdate("DELETE FROM catalog;");
         }
         return ResponseEntity.ok().build();
     }
@@ -28,7 +28,7 @@ public class HelperEndpoints {
     @PutMapping(value = "/database", consumes = "application/json")
     public ResponseEntity executeSQL(@RequestBody DatabaseQuery payload) {
 
-        imageDAO.executeQuery(payload.getQuery());
+        imageDAO.executeUpdate(payload.getQuery());
         log.info(payload.toString());
         return ResponseEntity.ok().build();
     }

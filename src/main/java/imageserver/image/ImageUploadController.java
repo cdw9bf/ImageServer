@@ -25,7 +25,7 @@ public class ImageUploadController {
     @PostMapping(path = "/image/upload")
     public ResponseEntity uploadImage(@RequestParam("file") MultipartFile file) {
         log.info("File name: " + file.getOriginalFilename());
-        imageStorageService.storeFile(file);
-        return ResponseEntity.ok().body("Successfully Stored File " + file.getOriginalFilename());
+        boolean ret = imageStorageService.storeFile(file);
+        return ResponseEntity.ok().body(ret ? "Succesfully Stored File" : "Failed to Store File");
     }
 }
