@@ -34,18 +34,30 @@ public class ImageDAO {
         source = pool;
     }
 
-    public void fetchImageMetadata(Integer id) {
-        try ( Connection con = source.getConnection()){
+    public String fetchImageByUuid(String uuid, String catalog) throws SQLException {
+        Statement stmt = null;
+        ResultSet rs = null;
+        String query = "SELECT * FROM " + catalog + " WHERE uuid='" + uuid + "';";
+        String path = null;
+        try (Connection con = source.getConnection()){
             // use connection
+            log.info("Executing query " + query);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+            rs.first();
+            path = rs.getString("path");
         } catch(SQLException e) {
             // log error
             log.warn(e.toString());
+            throw e;
+        } finally {
+            try { if (stmt != null) stmt.close(); } catch (Exception e) {log.warn(e.toString());};
         }
     }
 
-    public void insertImageMetadata(String fullImagePath, String thumbNailPath, String checksum, Date uploadDate, UUID uuid) throws InsertFailedException {
-        String catalogQuery = "INSERT INTO catalog VALUES ('" + uploadDate.toString() + "', '" + uuid.toString() +"', '" + "name"+ "');";
-        String fullImageQuery = "INSERT INTO fullSizeMetadata VALUES ('" + fullImagePath + "', '" + checksum + "', '" + uuid.toString() + "', '" + "name" + "', '" + "jpg" + "');";
+    public void insertImageMetadata(String fullImagePath, String thumbNailPath, String checksum, Date uploadDate, UUID uuid, String name, String type) throws InsertFailedException {
+        String catalogQuery = "INSERT INTO catalog VALUES ('" + uploadDate.toString() + "', '" + uuid.toString() +"', '" + name + "');";
+        String fullImageQuery = "INSERT INTO fullSizeMetadata VALUES ('" + fullImagePath + "', '" + checksum + "', '" + uuid.toString() + "', '" + name + "', '" + type + "');";
         this.executeUpdate(catalogQuery);
         this.executeUpdate(fullImageQuery);
     }

@@ -1,5 +1,6 @@
 package imageserver.image;
 
+import imageserver.beans.ImageUploadResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class ImageUploadController {
     @PostMapping(path = "/image/upload")
     public ResponseEntity uploadImage(@RequestParam("file") MultipartFile file) {
         log.info("File name: " + file.getOriginalFilename());
-        boolean ret = imageStorageService.storeFile(file);
-        return ResponseEntity.ok().body(ret ? "Succesfully Stored File" : "Failed to Store File");
+        ImageUploadResponse imageUploadResponse = imageStorageService.storeFile(file);
+        return ResponseEntity.ok().body(imageUploadResponse.toResponseJson());
     }
 }

@@ -1,5 +1,6 @@
 package imageserver.image;
 
+import imageserver.database.ImageDAO;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,8 +16,10 @@ import java.io.IOException;
 @RestController
 public class ImageDownloadController {
     private static Logger log = Logger.getLogger(ImageDownloadController.class);
+    private ImageDAO imageDAO;
 
     ImageDownloadController() {
+        this.imageDAO = new ImageDAO();
     }
 
 
@@ -27,22 +30,24 @@ public class ImageDownloadController {
      * @return
      */
     @GetMapping(path = "/image")
-    public ResponseEntity getImageById(@RequestParam("name") String name,
-                                       @RequestParam(value="type", required=false) String type) {
-        if (name == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Both id and name specified");
+    public ResponseEntity getImageById(@RequestParam(value = "uuid", required = false) String uuid,
+                                       @RequestParam(value = "location", required = false) String location) {
+        if ((uuid == null) && (location == null)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("All Parameters are null");
         }
-        String fileType = handleFileType(type);
+
+        String fileName = this.imageDAO.fetchImageByUuid(uuid, "fullSizeMetadata");
+
+
 
         try {
             FileInputStream is = new FileInputStream("/images/" + name + fileType);
-            log.info("/images/" + name + fileType);
-            byte[] bytes = StreamUtils.copyToByteArray(is);
-
+            byte[] bytes = this.readFile(is);
             return ResponseEntity
                     .ok()
                     .contentType(MediaType.IMAGE_JPEG)
                     .body(bytes);
+
         } catch (IOException ioe) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
@@ -51,13 +56,9 @@ public class ImageDownloadController {
         }
     }
 
-    private String handleFileType(String type) {
-        if (type != null) {
-            type = "." + type;
-        } else {
-            type = ".jpg";
-        }
-        return type;
+    private byte[] readFile(FileInputStream path) throws IOException {
+        byte[] bytes = StreamUtils.copyToByteArray(path);
+        return bytes;
     }
 
 }

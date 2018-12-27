@@ -1,5 +1,6 @@
 package imageserver.image;
 
+import imageserver.beans.ImageUploadResponse;
 import imageserver.database.ImageDAO;
 import imageserver.exceptions.InsertFailedException;
 import imageserver.properties.FileStorageProperties;
@@ -44,10 +45,12 @@ public class ImageStorageService {
     }
 
 
-    public boolean storeFile(MultipartFile file) {
+    public ImageUploadResponse storeFile(MultipartFile file) {
         // Normalize file name
         UUID uuid = UUID.randomUUID();
-
+        ImageUploadResponse imageUploadResponse = new ImageUploadResponse();
+        imageUploadResponse.setUuid(uuid);
+        imageUploadResponse.setChecksum("checksum");
 
         try {
             // Insert into Database
@@ -66,20 +69,25 @@ public class ImageStorageService {
                     fullSizePath.toString(),
                     "checkSum",
                     todaysDate,
-                    uuid);
+                    uuid,
+                    file.getOriginalFilename(),
+                    file.getContentType());
             log.info(fullSizePath.toString());
             Files.copy(file.getInputStream(), fullSizePath, StandardCopyOption.REPLACE_EXISTING);
 
         } catch (InsertFailedException ife ) {
             log.warn("Failed to store file in database");
-            return false;
+            imageUploadResponse.setSuccess(false);
+            return imageUploadResponse;
         } catch (IOException ex) {
 //            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
             this.imageDAO.removeImageMetadata(uuid);
-            return false;
+            imageUploadResponse.setSuccess(false);
+            return imageUploadResponse;
 
         }
-        return true;
+        imageUploadResponse.setSuccess(true);
+        return imageUploadResponse;
     }
 
 
