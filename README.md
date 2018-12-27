@@ -27,7 +27,7 @@ The app uses a standard postgres implementation. One can pull the container `pos
 
 
 To run the container,
-`docker run -p 5432:5432 -e POSTGRES_PASSWORD=<pw> -d postgres -rm`
+`docker run -p 5432:5432 -e POSTGRES_PASSWORD=<pw> --name imagedb -d postgres -rm`
 
 ### Backing up container
 To create a backup of the container run
