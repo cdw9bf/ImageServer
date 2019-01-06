@@ -8,22 +8,6 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 
 --
--- Drop databases (except postgres and template1)
---
-
-DROP DATABASE mydb;
-
-
-
-
---
--- Drop roles
---
-
-DROP ROLE postgres;
-
-
---
 -- Roles
 --
 

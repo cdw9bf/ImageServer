@@ -58,7 +58,7 @@ public class ImageStorageService {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
             Date todaysDate = new Date();
             String date = simpleDateFormat.format(todaysDate);
-            Path fullSizePath = this.fileStorageLocation.resolve("/full_size/" + date + "/" + uuid.toString());
+            Path fullSizePath = this.fileStorageLocation.resolve("full_size/" + date + "/" + uuid.toString());
 
             if (Files.notExists(fullSizePath)) {
                 Files.createDirectories(fullSizePath);

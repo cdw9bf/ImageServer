@@ -8,12 +8,17 @@ and making it easy to back up photos to different locations either on the cloud 
 ### Build and Deploy
 This app is designed to run inside of a docker container. To build the container one must be in the root directory of this project.
 
+Note: 
+    The Docker Image is automatically mounted to your local file system at `/images/`. To change this, modify the `-v /images:/images` to 
+    `-v /whatever/your/dirctory/path/is:/images` in the run command below. You will also have to give docker permission to 
+    read and write from this directory.
+
 Build:
   1. `mvn clean install`
   2. `docker build -f DockerFile -t imageserver .`
 
 Running the Container:
-  1. `docker run -p 8080:8080 --name=imagerest --link imagedb:imagedb -d imageserver  -rm `
+  1. `docker run -p 8080:8080 -v /images:/images --name=imagerest --link imagedb:imagedb -d imageserver  -rm `
 
 
 To test to see if the application is running correct, a sample image is included in the repo. The docker container is 

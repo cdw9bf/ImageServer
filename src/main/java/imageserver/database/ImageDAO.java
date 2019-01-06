@@ -42,7 +42,7 @@ public class ImageDAO {
         try (Connection con = source.getConnection()){
             // use connection
             log.info("Executing query " + query);
-            stmt = con.createStatement();
+            stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             rs = stmt.executeQuery(query);
             rs.first();
             path = rs.getString("path");
