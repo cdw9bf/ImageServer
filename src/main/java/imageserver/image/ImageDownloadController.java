@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @RestController
 public class ImageDownloadController {
@@ -25,23 +26,32 @@ public class ImageDownloadController {
 
     /**
      * Get file
-     * @param name= Name of file
-     * @param type= Type of file, optional. jpg Assumed
+     * @param uuid= Uuid of file
+     * @param location= Location of file (Not recommended to use)
      * @return
      */
-    @GetMapping(path = "/image")
+    @GetMapping(path = "/image/download")
     public ResponseEntity getImageById(@RequestParam(value = "uuid", required = false) String uuid,
                                        @RequestParam(value = "location", required = false) String location) {
         if ((uuid == null) && (location == null)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("All Parameters are null");
         }
 
-        String fileName = this.imageDAO.fetchImageByUuid(uuid, "fullSizeMetadata");
+        try {
+            if (uuid != null) {
+                location = this.imageDAO.fetchImageByUuid(uuid, "fullSizeMetadata");
+            }
+        } catch (SQLException sqlex) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("Uuid '" + uuid + "' not found.");
+        }
 
 
 
         try {
-            FileInputStream is = new FileInputStream("/images/" + name + fileType);
+            FileInputStream is = new FileInputStream(location);
             byte[] bytes = this.readFile(is);
             return ResponseEntity
                     .ok()
@@ -60,5 +70,7 @@ public class ImageDownloadController {
         byte[] bytes = StreamUtils.copyToByteArray(path);
         return bytes;
     }
+
+
 
 }

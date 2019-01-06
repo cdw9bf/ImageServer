@@ -9,13 +9,13 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
 
-@ControllerAdvice
-@RestController
-public class CustomResponseExceptionHandler {
-    @ExceptionHandler(ImageLookupFailure.class)
-    public final ResponseEntity<ErrorDetails> handleUserNotFoundException(ImageLookupFailure ex, WebRequest request) {
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
-                request.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
-    }
-}
+//@ControllerAdvice
+//@RestController
+//public class CustomResponseExceptionHandler {
+//    @ExceptionHandler(ImageLookupFailure.class)
+//    public final ResponseEntity<ErrorDetails> handleUserNotFoundException(ImageLookupFailure ex, WebRequest request) {
+//        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
+//                request.getDescription(false));
+//        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+//    }
+//}

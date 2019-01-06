@@ -53,6 +53,7 @@ public class ImageDAO {
         } finally {
             try { if (stmt != null) stmt.close(); } catch (Exception e) {log.warn(e.toString());};
         }
+        return path;
     }
 
     public void insertImageMetadata(String fullImagePath, String thumbNailPath, String checksum, Date uploadDate, UUID uuid, String name, String type) throws InsertFailedException {
