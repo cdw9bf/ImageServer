@@ -32,14 +32,16 @@ public class ImageDownloadController {
      */
     @GetMapping(path = "/image/download")
     public ResponseEntity getImageById(@RequestParam(value = "uuid", required = false) String uuid,
-                                       @RequestParam(value = "location", required = false) String location) {
+                                       @RequestParam(value = "location", required = false) String location,
+                                       @RequestParam(value = "type", required = false, defaultValue = "") String type) {
         if ((uuid == null) && (location == null)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("All Parameters are null");
         }
 
         try {
             if (uuid != null) {
-                location = this.imageDAO.fetchImageByUuid(uuid, "fullSizeMetadata");
+                String catalog = determineCatalog(type);
+                location = this.imageDAO.fetchImageByUuid(uuid, catalog);
             }
         } catch (SQLException sqlex) {
             return ResponseEntity
@@ -69,6 +71,24 @@ public class ImageDownloadController {
     private byte[] readFile(FileInputStream path) throws IOException {
         byte[] bytes = StreamUtils.copyToByteArray(path);
         return bytes;
+    }
+
+    private String determineCatalog(String type) {
+        String catalog;
+        switch (type) {
+            case "fullsize": {
+                catalog = "fullSizeMetadata";
+                break;
+            }
+            case "thumbnail": {
+                catalog = "thumbnailMetadata";
+                break;
+            }
+            default: {
+                catalog = "fullSizeMetadata";
+            }
+        }
+        return catalog;
     }
 
 

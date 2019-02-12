@@ -59,16 +59,29 @@ public class ImageDAO {
     public void insertImageMetadata(String fullImagePath, String thumbNailPath, String checksum, Date uploadDate, UUID uuid, String name, String type) throws InsertFailedException {
         String catalogQuery = "INSERT INTO catalog VALUES ('" + uploadDate.toString() + "', '" + uuid.toString() +"', '" + name + "');";
         String fullImageQuery = "INSERT INTO fullSizeMetadata VALUES ('" + fullImagePath + "', '" + checksum + "', '" + uuid.toString() + "', '" + name + "', '" + type + "');";
+        String thumbnailImageQuery = "INSERT INTO thumbnailMetadata VALUES ('" + thumbNailPath + "', '" + checksum + "', '" + uuid.toString() + "', '" + name + "', '" + type + "');";
+
+        log.debug("Catalog Insert Query: " + catalogQuery);
+        log.debug("Full Image Insert Query: " + fullImageQuery);
+        log.debug("Thumbnail Image Insert Query: " + thumbnailImageQuery);
+
         this.executeUpdate(catalogQuery);
         this.executeUpdate(fullImageQuery);
+        this.executeUpdate(thumbnailImageQuery);
     }
 
     public void removeImageMetadata(UUID uuid) {
+        String catalogDeleteQuery = "DELETE FROM catalog WHERE uuid=" + uuid.toString() + ";";
+        String fullSizeDeleteQuery = "DELETE FROM fullSizeMetadata WHERE uuid=" + uuid.toString() + ";";
+        String thumbnailDeleteQuery = "DELETE FROM thumbnailMetadata WHERE uuid=" + uuid.toString() + ";";
 
-        String catalogQuery = "DELETE FROM catalog WHERE uuid=" + uuid.toString() + ";";
-        String fullSizeQuery = "DELETE FROM fullSizeMetadata WHERE uuid=" + uuid.toString() + ";";
-        this.executeUpdate(catalogQuery);
-        this.executeUpdate(fullSizeQuery);
+        log.debug("Catalog Delete Query: " + catalogDeleteQuery);
+        log.debug("Full Image Delete Query: " + fullSizeDeleteQuery);
+        log.debug("Thumbnail Image Delete Query: " + thumbnailDeleteQuery);
+
+        this.executeUpdate(catalogDeleteQuery);
+        this.executeUpdate(fullSizeDeleteQuery);
+        this.executeUpdate(thumbnailDeleteQuery);
     }
 
     public int executeUpdate(String query) {
@@ -82,6 +95,7 @@ public class ImageDAO {
             rs = stmt.executeUpdate(query);
         } catch(SQLException e) {
             // log error
+            // TODO: handle Error better
             log.warn(e.toString());
         } finally {
             try { if (stmt != null) stmt.close(); } catch (Exception e) {log.warn(e.toString());};
